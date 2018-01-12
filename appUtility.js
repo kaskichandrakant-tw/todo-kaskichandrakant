@@ -31,6 +31,11 @@ let isFile=function(filePath){
   return fs.statSync(filePath).isFile()
 }
 
+let getFileData=function(filePath){
+  return fs.readFileSync(filePath,'utf8');
+}
+
 exports.isFile=isFile;
+exports.getFileData=getFileData;
 exports.getHeader=getHeader;
 exports.logRequest=logRequest;

@@ -5,7 +5,6 @@ const WebApp = require('./webapp');
 const appUtility = require('./appUtility.js');
 let logRequest=appUtility.logRequest;
 let getHeader=appUtility.getHeader;
-//const dataBase = require('./data/dataBase.json');
 
 const PORT = 5000;
 let server = http.createServer(app);
