@@ -3,3 +3,15 @@ h1{
   text-align: center;
   color: orange;
 }
+h2{
+  text-align=right;
+  color: green;
+}
+h3{
+  text-align=right;
+  color: red;
+}
+a{
+  font-size: 20px;
+  text-align: center;
+}

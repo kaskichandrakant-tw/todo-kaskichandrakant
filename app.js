@@ -15,7 +15,7 @@ let validUsers = [{
   name: 'vivek',
   place: 'karad'
 }];
-let userN;
+var userN;
 
 
 let serveStaticFile = function(req, res) {
@@ -58,7 +58,7 @@ let addLinksAsHtml=function(data){
   let allLink=''
   data.forEach((ele)=>{
     if(ele[userN]){
-      allLink+=`<a href=editTodo>${ele[userN].title}</a><br>`
+      allLink+=`<a href=editTodo>Title:--${ele[userN].title}</a><br>`
     }
   })
   return allLink;
@@ -85,13 +85,49 @@ let addTodo = function(req, res) {
   res.end();
 }
 
+let getItems=function(collection){
+  let allItems='';
+  collection.forEach((element)=>{
+    allItems+=`<p>${element}</p>`
+  })
+  return allItems;
+}
+
+let getInfoAboutTodo=function(data){
+  let todoInfo=''
+  data.forEach((element)=>{
+    if(element[userN]){
+      todoInfo+=`<h1>Title:--${element[userN].title}</h1>`
+      todoInfo+=`<h2>Description:--${element[userN].description}</h2><h3>All Items</h3>`
+      todoInfo+=`<p>${getItems(element[userN].item)}</p>`
+    }
+  })
+  return todoInfo;
+}
+
+let editTodo=function(req,res){
+  let fileData=getFileData('./public/editTodo.html');
+  let addedTodoInfo=fileData.replace(/DATA/,getInfoAboutTodo(dataBase))
+  res.write(addedTodoInfo);
+  res.end();
+}
+
+
+let addItem=function(req,res){
+  let data=dataBase.find(u=>typeof(u[userN])=='object');
+  data[userN].item.push(req.body.item);
+  fs.writeFileSync('./data/dataBase.json', JSON.stringify(dataBase));
+  res.redirect('/editTodo');
+}
 
 let app = WebApp.create();
 app.use(logRequest);
 app.use(serveFile);
 app.post('/login', postLogin);
 app.get('/home', getHomeForValidUser);
-app.post('/addTodo', addTodo)
+app.post('/addTodo', addTodo);
+app.get('/editTodo',editTodo);
+app.post('/addItem',addItem)
 
 
 
