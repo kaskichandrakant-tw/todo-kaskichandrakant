@@ -8,6 +8,7 @@ let isFile=appUtility.isFile;
 const dataBase = require('./data/dataBase.json');
 let validUsers=[{name:'***REMOVED***',place:'karad'},{name:'vivek',place:'karad'}];
 
+
 let serveStaticFile = function(req, res) {
   let path = req.url;
   if (path == '/') {
@@ -23,20 +24,31 @@ let serveStaticFile = function(req, res) {
     return;
   }
 }
+
 let serveFile = function(req, res) {
   if (req.method == "GET" && !req.url.startsWith('/Gu')) {
     serveStaticFile(req, res);
   }
 }
 
-let redirectToHome=function(req,res){
-  res.redirect('/home.html')
-}
+let postLogin=(req, res) => {
+  let user = validUsers.find(u => u.name == req.body.userName);
+  req.user=req.body.userName;
+  if (!user) {
+    res.setHeader('Set-Cookie', `logInFailed=true`);
+    res.redirect('/login.html');
+    return;
+  }
+  let sessionid = new Date().getTime();
+  res.setHeader('Set-Cookie', `sessionid=${sessionid}`);
+  user.sessionid = sessionid;
+  res.redirect('/home.html');
+};
 
 let app = WebApp.create();
 app.use(logRequest);
 app.use(serveFile);
-app.post('/login',redirectToHome)
+app.post('/login',postLogin)
 
 
 
