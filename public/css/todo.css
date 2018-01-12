@@ -15,3 +15,6 @@ a{
   font-size: 20px;
   text-align: center;
 }
+#logout{
+  float: right;
+}

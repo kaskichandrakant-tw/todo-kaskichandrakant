@@ -20,7 +20,7 @@ var userN;
 
 let serveStaticFile = function(req, res) {
   let path = req.url;
-  if (path == '/') {
+  if (path == '/'||path=='/login') {
     res.redirect('/login.html');
   }
   let filePath = './public' + path;
@@ -40,6 +40,7 @@ let serveFile = function(req, res) {
   }
 }
 
+
 let postLogin = (req, res) => {
   let user = validUsers.find(u => u.name == req.body.userName);
   userN = req.body.userName;
@@ -54,6 +55,14 @@ let postLogin = (req, res) => {
   res.redirect('/home');
 };
 
+let loadUser = (req, res) => {
+  let sessionid = req.cookies.sessionid;
+  let user = validUsers.find(u => u.sessionid == sessionid);
+  if (sessionid && user) {
+    req.user = user;
+  }
+};
+
 let addLinksAsHtml=function(data){
   let allLink=''
   data.forEach((ele)=>{
@@ -66,19 +75,20 @@ let addLinksAsHtml=function(data){
 
 let getHomeForValidUser = function(req, res) {
   let homeData = getFileData('./public/home.html')
-  let addedLinkData=homeData.replace(/TODOLIST/,addLinksAsHtml(dataBase))
-  res.write(addedLinkData.replace(/USER/, `Hello ${userN}`))
+  let addedLinkData=homeData.replace(/TODOLIST/,addLinksAsHtml(dataBase));
+  res.write(addedLinkData.replace(/USER/, `Hello ${req.user.name}`))
   res.end();
 }
 
 let addTodo = function(req, res) {
   let data = {};
+  let username=req.user.name;
   let title = req.body.title;
   let description = req.body.description;
-  data[userN]={}
-  data[userN].title=title;
-  data[userN].description=description;
-  data[userN].item=[];
+  data[username]={}
+  data[username].title=title;
+  data[username].description=description;
+  data[username].item=[];
   dataBase.push(data);
   fs.writeFileSync('./data/dataBase.json', JSON.stringify(dataBase));
   res.redirect('/home')
@@ -115,19 +125,30 @@ let editTodo=function(req,res){
 
 let addItem=function(req,res){
   let data=dataBase.find(u=>typeof(u[userN])=='object');
-  data[userN].item.push(req.body.item);
+  data[req.user.name].item.push(req.body.item);
   fs.writeFileSync('./data/dataBase.json', JSON.stringify(dataBase));
   res.redirect('/editTodo');
 }
+let redirectLoggedInUserToHome = (req, res) => {
+  if (req.urlIsOneOf(['/', '/login.html']) && req.user) res.redirect('/home');
+}
+let loguot=(req, res) => {
+  res.setHeader('Set-Cookie', [`loginFailed=false,Expires=${new Date(1).toUTCString()}`, `sessionid=0,Expires=${new Date(1).toUTCString()}`]);
+  delete req.user.sessionid;
+  res.redirect('/login');
+};
 
 let app = WebApp.create();
 app.use(logRequest);
 app.use(serveFile);
 app.post('/login', postLogin);
+app.use(loadUser)
+app.use(redirectLoggedInUserToHome);
 app.get('/home', getHomeForValidUser);
 app.post('/addTodo', addTodo);
+app.get('/logout',loguot);
 app.get('/editTodo',editTodo);
-app.post('/addItem',addItem)
+app.post('/addItem',addItem);
 
 
 
