@@ -27,6 +27,10 @@ let getHeader = function(fileName) {
   return extObj[ext]
 }
 
+let isFile=function(filePath){
+  return fs.statSync(filePath).isFile()
+}
 
+exports.isFile=isFile;
 exports.getHeader=getHeader;
 exports.logRequest=logRequest;
