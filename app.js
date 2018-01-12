@@ -58,7 +58,7 @@ let addLinksAsHtml=function(data){
   let allLink=''
   data.forEach((ele)=>{
     if(ele[userN]){
-      allLink+=`<a href=editTodo>${Object.keys(ele[userN])[0]}</a><br>`
+      allLink+=`<a href=editTodo>${ele[userN].title}</a><br>`
     }
   })
   return allLink;
@@ -76,9 +76,9 @@ let addTodo = function(req, res) {
   let title = req.body.title;
   let description = req.body.description;
   data[userN]={}
-  data[userN][title]={}
-  data[userN][title].description=description;
-  data[userN][title].item=[];
+  data[userN].title=title;
+  data[userN].description=description;
+  data[userN].item=[];
   dataBase.push(data);
   fs.writeFileSync('./data/dataBase.json', JSON.stringify(dataBase));
   res.redirect('/home')
