@@ -28,7 +28,7 @@ class User {
     delete this.allUsers[userName][currentTitle];
   }
   changeDescription(userName,title,newDescription){
-    let todoInfo=this.allUsers[userName][currentTitle];
+    let todoInfo=this.allUsers[userName][title];
     todoInfo.changeDescription(newDescription)
   }
   addTask(userName,title,task){

@@ -31,13 +31,30 @@ describe('#user', function() {
       assert.deepEqual(user.getUserInfo('***REMOVED***'), {})
     })
   })
-  describe('#chnageTitle', function() {
+  describe('#changeTitle', function() {
     it('should be able to change the title of todo', function() {
       user.loadAllUsers();
       user.addTodoList('***REMOVED***', 'NOTHING', 'nothing');
       user.changeTitle('***REMOVED***','NOTHING','SOMETHING')
-      console.log(user.getUserInfo('***REMOVED***'));
       assert.equal(user.getUserInfo('***REMOVED***')['SOMETHING'].description, 'nothing')
+    })
+  })
+  describe('#changeDescription', function() {
+    it('should be able to change the title of todo', function() {
+      user.loadAllUsers();
+      user.addTodoList('***REMOVED***', 'NOTHING', 'nothing');
+      user.changeDescription('***REMOVED***','NOTHING','SOMETHING')
+      assert.equal(user.getUserInfo('***REMOVED***')['NOTHING'].description, 'SOMETHING')
+    })
+  })
+  describe('#addTask', function() {
+    it('should be able to change the title of todo', function() {
+      user.loadAllUsers();
+      user.addTodoList('***REMOVED***', 'NOTHING', 'nothing');
+      user.addTask('***REMOVED***','NOTHING','do something');
+      let actual=user.getTasks('***REMOVED***','NOTHING')['do something'].task
+      let expected='do something'
+      assert.equal(actual,expected);
     })
   })
 })
