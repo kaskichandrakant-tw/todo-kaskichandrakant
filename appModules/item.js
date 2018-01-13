@@ -1,4 +1,4 @@
-class item {
+class Item {
   constructor(task) {
     this.task=task;
     this.status=false;
@@ -15,8 +15,8 @@ class item {
   isDone(){
     return this.status;
   }
-  edit(newTask){
+  changeTask(newTask){
     this.task=newTask;
   }
 }
-module.exports=item;
+module.exports=Item;

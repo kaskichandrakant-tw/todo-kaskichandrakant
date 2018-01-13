@@ -1,4 +1,4 @@
-let Item=require('../../appModules/item.js');
+let Item=require('../appModules/item.js');
 let assert=require('chai').assert;
 
 describe('Item',function(){
@@ -27,11 +27,11 @@ describe('Item',function(){
       assert.equal(onMoreTask.getItem(),'do one more thing');
     })
   })
-  describe('edit',function(){
-    it('should be able to edit the taskInfo',function(){
+  describe('changeTask',function(){
+    it('should be able to changeTask of the taskInfo',function(){
       let task = new Item('do somthing');
       assert.equal(task.getItem(),'do somthing');
-      task.edit('actually do somthing else')
+      task.changeTask('actually do somthing else')
       assert.equal(task.getItem(),'actually do somthing else');
     })
   })

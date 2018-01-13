@@ -1,5 +1,5 @@
 const Item = require('./item.js');
-class todo {
+class Todo {
   constructor(title,description) {
     this.title=title;
     this.description=description;
@@ -19,6 +19,10 @@ class todo {
   }
   changeDescription(newDes){
     this.description=newDes;
+  }
+  changeTask(currentTask,newTask){
+    this.items[newTask]=new Item(newTask);
+    delete this.items[currentTask];
   }
   removeItem(task){
     delete this.items[task]
@@ -40,4 +44,4 @@ class todo {
   }
 }
 
-module.exports=todo;
+module.exports=Todo;

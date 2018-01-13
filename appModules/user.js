@@ -1,6 +1,6 @@
 const fs = require('fs');
-const tode = require('./tode.js');
-class user {
+const Todo = require('./todo.js');
+class User {
   constructor(userInfoSrc) {
     this.userInfoSrc=userInfoSrc;
     this.allUsers={};
@@ -14,7 +14,7 @@ class user {
   }
   addTodoList(userName,title,description){
     let userInfo=this.allUsers[userName]
-    let todo=new todo(title,description)
+    let todo=new Todo(title,description)
     userInfo[title]=todo;
   }
   removeTodoList(userName,title){
@@ -24,6 +24,7 @@ class user {
   changeTitle(userName,currentTitle,newTitle){
     let todoInfo=this.allUsers[userName][currentTitle];
     todoInfo.changeTitle(newTitle);
+    this.allUsers[userName][newTitle]=todoInfo
     delete this.allUsers[userName][currentTitle];
   }
   changeDescription(userName,title,newDescription){
@@ -34,9 +35,20 @@ class user {
     let todoInfo=this.allUsers[userName][title];
     todoInfo.addTask(task);
   }
+  taskDone(userName,title,task){
+    let todoInfo=this.allUsers[userName][title];
+    todoInfo.taskDone(task);
+  }
+  taskNotDone(userName,title,task){
+    let todoInfo=this.allUsers[userName][title];
+    todoInfo.taskNotDone(task);
+  }
   getTasks(userName,title){
     let todoInfo=this.allUsers[userName][title]
     return todoInfo.getTasks();
   }
+  addUser(userName){
+    this.allUsers[userName]={};
+  }
 }
-module.exports=user;
+module.exports=User;
