@@ -20,7 +20,7 @@ var userN;
 
 let serveStaticFile = function(req, res) {
   let path = req.url;
-  if (path == '/'||path=='/login') {
+  if (path == '/' || path == '/login') {
     res.redirect('/login.html');
   }
   let filePath = './public' + path;
@@ -63,11 +63,11 @@ let loadUser = (req, res) => {
   }
 };
 
-let addLinksAsHtml=function(data){
-  let allLink=''
-  data.forEach((ele)=>{
-    if(ele[userN]){
-      allLink+=`<a href=editTodo>Title:--${ele[userN].title}</a><br>`
+let addLinksAsHtml = function(data) {
+  let allLink = ''
+  data.forEach((ele) => {
+    if (ele[userN]) {
+      allLink += `<a href=editTodo>Title:--${ele[userN].title}</a><br>`
     }
   })
   return allLink;
@@ -75,56 +75,56 @@ let addLinksAsHtml=function(data){
 
 let getHomeForValidUser = function(req, res) {
   let homeData = getFileData('./public/home.html')
-  let addedLinkData=homeData.replace(/TODOLIST/,addLinksAsHtml(dataBase));
+  let addedLinkData = homeData.replace(/TODOLIST/, addLinksAsHtml(dataBase));
   res.write(addedLinkData.replace(/USER/, `Hello ${req.user.name}`))
   res.end();
 }
 
 let addTodo = function(req, res) {
   let data = {};
-  let username=req.user.name;
+  let username = req.user.name;
   let title = req.body.title;
   let description = req.body.description;
-  data[username]={}
-  data[username].title=title;
-  data[username].description=description;
-  data[username].item=[];
+  data[username] = {}
+  data[username].title = title;
+  data[username].description = description;
+  data[username].item = [];
   dataBase.push(data);
   fs.writeFileSync('./data/dataBase.json', JSON.stringify(dataBase));
   res.redirect('/home')
   res.end();
 }
 
-let getItems=function(collection){
-  let allItems='';
-  collection.forEach((element)=>{
-    allItems+=`<p>${element}</p>`
+let getItems = function(collection) {
+  let allItems = '';
+  collection.forEach((element) => {
+    allItems += `<p>${element}</p>`
   })
   return allItems;
 }
 
-let getInfoAboutTodo=function(data){
-  let todoInfo=''
-  data.forEach((element)=>{
-    if(element[userN]){
-      todoInfo+=`<h1>Title:--${element[userN].title}</h1>`
-      todoInfo+=`<h2>Description:--${element[userN].description}</h2><h3>All Items</h3>`
-      todoInfo+=`<p>${getItems(element[userN].item)}</p>`
+let getInfoAboutTodo = function(data) {
+  let todoInfo = ''
+  data.forEach((element) => {
+    if (element[userN]) {
+      todoInfo += `<h1>Title:--${element[userN].title}</h1>`
+      todoInfo += `<h2>Description:--${element[userN].description}</h2><h3>All Items</h3>`
+      todoInfo += `<p>${getItems(element[userN].item)}</p>`
     }
   })
   return todoInfo;
 }
 
-let editTodo=function(req,res){
-  let fileData=getFileData('./public/editTodo.html');
-  let addedTodoInfo=fileData.replace(/DATA/,getInfoAboutTodo(dataBase))
+let editTodo = function(req, res) {
+  let fileData = getFileData('./public/editTodo.html');
+  let addedTodoInfo = fileData.replace(/DATA/, getInfoAboutTodo(dataBase))
   res.write(addedTodoInfo);
   res.end();
 }
 
 
-let addItem=function(req,res){
-  let data=dataBase.find(u=>typeof(u[userN])=='object');
+let addItem = function(req, res) {
+  let data = dataBase.find(u => typeof(u[userN]) == 'object');
   data[req.user.name].item.push(req.body.item);
   fs.writeFileSync('./data/dataBase.json', JSON.stringify(dataBase));
   res.redirect('/editTodo');
@@ -132,11 +132,17 @@ let addItem=function(req,res){
 let redirectLoggedInUserToHome = (req, res) => {
   if (req.urlIsOneOf(['/', '/login.html']) && req.user) res.redirect('/home');
 }
-let loguot=(req, res) => {
+let loguot = (req, res) => {
   res.setHeader('Set-Cookie', [`loginFailed=false,Expires=${new Date(1).toUTCString()}`, `sessionid=0,Expires=${new Date(1).toUTCString()}`]);
   delete req.user.sessionid;
   res.redirect('/login');
 };
+let deletTodo = function(req, res) {
+  delete dataBase[req.user.name];
+  fs.writeFileSync('./data/dataBase.json', JSON.stringify(dataBase));
+  console.log('---->',dataBase);
+  res.redirect('/home')
+}
 
 let app = WebApp.create();
 app.use(logRequest);
@@ -146,9 +152,10 @@ app.use(loadUser)
 app.use(redirectLoggedInUserToHome);
 app.get('/home', getHomeForValidUser);
 app.post('/addTodo', addTodo);
-app.get('/logout',loguot);
-app.get('/editTodo',editTodo);
-app.post('/addItem',addItem);
+app.get('/logout', loguot);
+app.get('/editTodo', editTodo);
+app.post('/addItem', addItem);
+app.get('/deletTodo', deletTodo)
 
 
 
