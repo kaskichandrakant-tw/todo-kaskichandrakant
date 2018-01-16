@@ -21,8 +21,8 @@ class Account {
     todoList.changeTitle(newTitle);
   }
   getTitle(todoNo) {
-    let todoList = this.todoLists[todoNo]
-    return todoList.getTitle();
+    return this.todoLists[todoNo].getTitle()
+    //return todoList.getTitle();
   }
   getDescription(todoNo) {
     let todoList = this.todoLists[todoNo]
@@ -33,11 +33,11 @@ class Account {
     todoList.changeDescription(newDescription);
   }
   addTask(todoNo, task) {
-    let todoList = this.todoLists[todoNo]
-    todoList.addTask(task);
+    this.todoLists[todoNo].addTask(task)
+    //todoList.addTask(task);
   }
   changeTask(todoNo,itemNo,newTask){
-    this.todolists[todoNo].changeTask(itemNo,newTask)
+    this.todoLists[todoNo].changeTask(itemNo,newTask)
   }
   taskDone(todoNo, taskNo) {
     let todoList = this.todoLists[todoNo]
@@ -59,6 +59,9 @@ class Account {
   }
   addSrNo() {
     this.srNo++;
+  }
+  getAllTodoLists(){
+    return this.todoLists;
   }
   increaseTodoCount() {
     this.totalTodoCount++;

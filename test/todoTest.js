@@ -1,4 +1,4 @@
-let Todo=require('../appModules/todo.js');
+let Todo=require('../appModels/todo.js');
 let assert=require('chai').assert;
 
 

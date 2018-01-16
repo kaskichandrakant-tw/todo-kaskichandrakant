@@ -1,4 +1,4 @@
-let TodoApp = require('../appModules/todoApp.js');
+let TodoApp = require('../appModels/todoApp.js');
 let assert = require('chai').assert;
 
 describe('TodoApp', function() {

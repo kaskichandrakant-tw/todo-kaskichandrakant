@@ -1,4 +1,4 @@
-let Account = require('../appModules/account.js');
+let Account = require('../appModels/account.js');
 let assert = require('chai').assert;
 
 describe('Account', function() {

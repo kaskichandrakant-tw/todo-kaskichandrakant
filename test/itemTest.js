@@ -1,4 +1,4 @@
-let Item=require('../appModules/item.js');
+let Item=require('../appModels/item.js');
 let assert=require('chai').assert;
 
 describe('Item',function(){

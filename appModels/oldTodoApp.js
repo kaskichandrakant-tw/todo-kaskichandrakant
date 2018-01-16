@@ -1,7 +1,7 @@
 let Account = require('./account.js')
 class TodoApp {
   constructor() {
-    this.allAccount = {};
+    this.allAccount = [];
     this.totalAccounts = 0;
   }
   addAccount(userName) {
@@ -17,9 +17,6 @@ class TodoApp {
   changeTitle(userName, todoNo, newTitle) {
     this.allAccount[userName].changeTitle(todoNo,newTitle);
   }
-  getDescription(userName,todoNo) {
-    return this.allAccount[userName].getDescription(todoNo);
-  }
   changeDescription(userName,todoNo,newDescription) {
     this.allAccount[userName].changeDescription(todoNo,newDescription);
   }
@@ -32,14 +29,17 @@ class TodoApp {
   taskNotDone(userName,todoNo, taskNo) {
     this.allAccount[userName].taskNotDone(todoNo,taskNo);
   }
-  isDone(userName,todoNo, taskNo) {
-    return this.allAccount[userName].isDone(todoNo,taskNo);
-  }
   changeTask(userName,todoNo,taskNo){
     this.allAccount[userName].changeTask(todoNo,taskNo);
   }
+  isDone(userName,todoNo, taskNo) {
+    return this.allAccount[userName].isDone(todoNo,taskNo);
+  }
+  getAllTodoLists(userName){
+    return this.allAccount[userName].getAllTodoLists();
+  }
   getTasks(userName,todoNo) {
-    return this.allAccount[userName][todoNo].items;
+    return this.allAccount[userName].getTasks(todoNo);
   }
   getTotalTodoCount(userName) {
     return this.allAccount[userName].getTotalTodoCount();
@@ -52,6 +52,9 @@ class TodoApp {
   }
   getTitle(userName,todoNo) {
     return this.allAccount[userName].getTitle(todoNo);
+  }
+  getDescription(userName,todoNo) {
+    return this.allAccount[userName].getDescription(todoNo);
   }
 }
 
