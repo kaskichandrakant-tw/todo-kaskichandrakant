@@ -28,6 +28,7 @@ let getHeader = function(fileName) {
 }
 
 let isFile=function(filePath){
+  // console.log('------>',fs.statSync(filePath));
   return fs.statSync(filePath).isFile()
 }
 
