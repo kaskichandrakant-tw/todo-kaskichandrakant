@@ -1,5 +1,5 @@
 {
-  "name": "todo-kaski***REMOVED***",
+  "name": "todo-kaskichandrakant",
   "version": "1.0.0",
   "description": "## Objective",
   "main": "app.js",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/STEP-tw/todo-kaski***REMOVED***.git"
+    "url": "git+https://github.com/STEP-tw/todo-kaskichandrakant.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/STEP-tw/todo-kaski***REMOVED***/issues"
+    "url": "https://github.com/STEP-tw/todo-kaskichandrakant/issues"
   },
-  "homepage": "https://github.com/STEP-tw/todo-kaski***REMOVED***#readme",
+  "homepage": "https://github.com/STEP-tw/todo-kaskichandrakant#readme",
   "dependencies": {
     "chai": "^4.1.2"
   }

@@ -10,7 +10,7 @@ let getFileData = appUtility.getFileData;
 
 let TodoApp = require('./appModels/todoApp.js');
 let todoApp = new TodoApp();
-todoApp.addAccount('***REMOVED***');
+todoApp.addAccount('chandrakant');
 let validUsers = todoApp.getAllAccounts();
 
 let serveStaticFile = function(req, res) {
